@@ -1,0 +1,65 @@
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.nav
+*.snm
+
+## Intermediate documents:
+*.dvi
+*-converted-to.*
+
+## Bibliography auxiliary files (bibtex/biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.brf
+*.run.xml
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+*.DS_Store
+
+## Matlab auxiliary files:
+*.asv
+*.m~
+
+## R auxiliary files:
+*.Rhistory
+*.Rapp.history
+
+## Stata auxiliary files:
+*.stswp
+
+## R directory files
+paths.R
+
+## Stata directory files
+globals.do
+
+## Files used in cluster
+*.feather
+
+## Temp data folder (for Stata) 
+/temp/*
+
+## Log files
+LogFiles/
+*_out.txt
+
+ 
+kill_repo_history.bat 

@@ -1,0 +1,2 @@
+Here we reshape timeseries data from Bloomberg from wide to long. 
+bbg imports/cleans crude product datasets while refined imports refined product datasets. These are stored in dropbox/intdata/Bloomberg.
