@@ -1,0 +1,438 @@
+\documentclass[12pt]{article}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage{amsmath,amsfonts}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[authoryear]{natbib}
+% \usepackage[unicode=true]{hyperref}
+\usepackage{breakurl}
+
+\usepackage{array}
+\usepackage[centerlast,bf]{caption}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+\usepackage{hhline}
+\usepackage{calc} 
+\usepackage{tabularx}
+\usepackage{booktabs}  
+\usepackage[flushleft]{threeparttable}
+\usepackage{pdflscape}
+\usepackage{sectsty}
+
+\usepackage[title]{appendix}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+
+% ITALICIZED SUBSECTION HEADINGS
+\subsectionfont{\normalfont\itshape}
+
+% POSESSIVE CITATIONS    
+\newcommand\cites[1]{\citeauthor{#1}'s\ (\citeyear{#1})}
+
+% TO REFERENCE ITEMS IN THE APPX
+\usepackage{zref-xr}
+\zxrsetup{toltxlabel}
+\zexternaldocument*[appx-]{KS_JonesAct_appx}
+
+%\setlength\labelsep{0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  PACKAGES FOR COMMENTING
+% THIS ADDS TEXT BOXES IN THE MARGIN
+\usepackage[colorinlistoftodos,textsize=small]{todonotes}
+
+% IF SELECTED, COMMAND WILL NOT DISPLAY COMMENTED TEXT  
+%\newcommand{\comment}[1]{}  %comment not shown
+
+%IF SELECTED, COMMAND WILL PRINT COMMENTED TEXT IN BLUE  
+\newcommand{\comment}[1]
+{{\bfseries \color{red} #1}} %comment shown
+
+\newcommand{\inputy}[1]{\input{#1}\unskip}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+
+\oddsidemargin 0in \evensidemargin 0in \topmargin 0in \columnsep 10pt
+\columnseprule 0pt \marginparwidth 90pt \marginparsep 11pt
+\marginparpush 5pt \headheight 0pt \headsep 0pt \textheight 9in
+\textwidth 6.5in
+
+\usepackage{setspace}
+\usepackage{xcolor}
+% \hypersetup{
+%    colorlinks,
+%    linkcolor={blue!80!black},
+%    citecolor={blue!80!black},
+%    urlcolor={blue!80!black}
+% }
+
+%THIS ALLOWS US TO HIDE FACT DRAFT WAS COMPILED THE DAY OF SUBMISSION 
+\usepackage{datetime2,datetime2-calc}
+\DTMnewdatestyle{Myyyy}{%
+  \renewcommand*{\DTMdisplaydate}[4]{\DTMmonthname{##2}~##1}%
+  \renewcommand*{\DTMDisplaydate}{\DTMdisplaydate}%
+}
+\DTMsetdatestyle{Myyyy}
+
+%%%%% Directory path for input files (tables and single num tex files)
+\makeatletter
+\def\input@path{{../output/}}
+\makeatother
+%%%%% Directory path of image files
+\graphicspath{{../output/figures/}}
+
+% DEFINE FIGURE INSERT AND NOTE COMMANDS
+\newlength{\figwidth}
+\newcommand{\figinpt}[2]{
+    \settowidth{\figwidth}{\includegraphics[#1]{#2}}
+    \centering
+    \includegraphics[#1]{#2}}
+
+\DeclareTextFontCommand{\fignotefont}{\normalfont\footnotesize}
+\newcommand{\fignote}[2][\linewidth]{
+    \begin{minipage}[]{#1}
+        \vspace{12pt}
+        \fignotefont{#2}
+    \end{minipage}}
+
+\makeatletter
+
+%COMBINE MULTIPLE TABLES IN A FLOAT	
+\usepackage[position=top,font=normalsize]{subfig}
+\captionsetup{position=top}
+
+%\@ifundefined{showcaptionsetup}{}{%
+%	\PassOptionsToPackage{caption=false}{subfig}}
+%\usepackage{subfig}
+%\makeatother
+
+%\renewcommand{\thesection}{\Roman{section}} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END PREAMBLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\begin{document}
+
+\title{Impacts of the Jones Act on U.S. Petroleum Markets
+\vspace{10pt}}
+
+\author{Ryan Kellogg \\ Richard L. Sweeney\thanks{Kellogg: University of Chicago Harris School of Public Policy and NBER, kelloggr@uchicago.edu. Sweeney: Boston College Department of Economics, sweeneri@bc.edu. The authors declare they have no interests, financial or otherwise, that relate to the research described in this paper. We thank Jonathan Rockower, Anna-Elise Smith, and Zirui Song for excellent research assistance. We thank the University of Chicago Bartlett Fellowship program for research assistant funding. Data and code for replication are available at https://github.com/rlsweeney/Public\_KS\_JonesAct.}}
+
+\date{\today \\
+ \vspace{0.5cm}
+}
+\maketitle
+\thispagestyle{empty}	
+\begin{abstract}
+
+% 150 word limit for JLE. Below is 150
+
+We study how the Jones Act---a 100-year-old U.S. regulation that constrains domestic waterborne shipping---affects U.S. markets for crude oil and petroleum products. We collect data on U.S. Gulf Coast and East Coast fuel prices, movements, and consumption, and we estimate domestic non-Jones shipping costs using freight rates for Gulf Coast exports. We then model counterfactual prices and product movements absent the Jones Act, allowing shippers to arbitrage price differences between the Gulf and East Coasts when they exceed transport costs. Eliminating the Jones Act would have reduced average East Coast gasoline, jet fuel, and diesel prices by \$\input{tex_numbers/cf/tex_wdeltap_gas.tex}\unskip, \$\input{tex_numbers/cf/tex_wdeltap_jet.tex}\unskip, and \$\input{tex_numbers/cf/tex_wdeltap_ulsd.tex}per barrel, respectively, during 2018--2019, with the largest price decreases occurring in the Lower Atlantic. The Gulf Coast gasoline price would increase by \$\input{tex_numbers/cf/tex_deltap_gas_3.tex}per barrel. U.S. consumers' surplus would increase by \$\input{tex_numbers/cf/cs_all_all.tex}million per year, and producers' surplus would decrease by \$\input{tex_numbers/cf/ps_all_all.tex}million per year.
+
+
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BEGIN TEXT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\newpage
+\setcounter{page}{1} \onehalfspace
+
+
+\section{Introduction} \label{sec:Intro}
+
+The Jones Act of 1920 requires that goods shipped by water from one U.S. port to another be carried by vessels that are U.S. built, U.S. owned, U.S. crewed, and fly the U.S. flag.\footnote{See \cite{CRS2019} for a discussion of the history of the Jones Act and the details of its requirements.} These restrictions have the effect of increasing the cost of domestic shipping, also known as cabotage, relative to the cost of sending goods over an equivalent distance internationally. This policy has been cited as increasing the cost of everything from road salt in New Jersey, to hurricane aid relief in Puerto Rico, to offshore wind in Massachusetts \citep{melitz_econofact, Lee2023}. Estimates of the economy-wide costs imposed by the Jones Act have ranged from \$696 million to \$19 billion annually \citep{USITC2002,OECD2019}.
+
+In this paper, we quantify the costs of the Jones Act in an important sector: U.S. petroleum markets. Much of the United States' oil and gas resources and refining capacity are located in Texas and along the Gulf of Mexico coast, far from the urban demand centers on the U.S. East and West coasts. One way to solve this imbalance would be to move hydrocarbons from the U.S. Gulf Coast (hereafter USGC) to the U.S. East Coast (hereafter USEC) by ship, around Florida and up the coastline.\footnote{Throughout the paper, we focus on the potential for oil and refined product movements to the USEC rather than the U.S. West Coast (USWC). See section \ref{sec:Limits} for a discussion of barriers to USWC shipments.} However, in practice the USEC imports large quantities of fuel from across the Atlantic, while the USGC exports the same fuels to destinations as far away as Asia, rather than engaging in coastwise domestic trade up the Eastern Seaboard.\footnote{\cite{CRS2019} explains that USGC-to-USEC movements cannot be ``laundered'' as foreign transactions by simply stopping at a Caribbean foreign port and recording a paper transaction. Instead, the fuel would need to transformed or blended in some way at the foreign port.\label{fn:launder}} Figure \ref{fig:mapflows} displays a map showing the average annual volumes of these imports and exports during 2018--2019. A leading explanation for this pattern is the fact that Jones-compliant movements from the USGC to USEC are estimated to cost as much as three times as much as movements on foreign-flag vessels \citep{CRS2017}. Advocates of repealing the Jones Act therefore frequently argue that it distorts oil and refined product markets, leading to higher prices for USEC consumers, lower prices for USGC producers, or both \citep{coleman2017,Cato2018,AEI2020,CatoJPMorgan2022,BbgJPMorgan2022}.\footnote{\cite{CatoJPMorgan2022} and \cite{BbgJPMorgan2022} reference a 2022 JPMorgan note concluding that a Jones Act suspension would reduce USEC gasoline prices by ten cents per gallon. This price decrease exceeds the USEC versus USGC price differential for almost all of 2015--2021, though it is less than the price differential during 2022, when it spiked following Russia's invasion of Ukraine (see appendix figure \ref{appx-appx:fig:pricediffs_longpanel}).} 
+
+Our goal in this paper is to quantify how eliminating the Jones Act's restrictions on domestic shipping would affect oil and refined product markets on the USGC and USEC, in the short-run.\footnote{The short-run nature of our analysis stems from the assumption that domestic production and consumption would be unchanged by the abolition of the Jones Act. As we discuss in section \ref{sec:Limits}, this assumption likely underestimates the long-run effect.} Answering this question amounts to specifying a counterfactual for what would have happened to oil and refined product movements and prices were shippers able to transport freight domestically at a cost-per-mile comparable to that for international freight, rather than the high Jones-compliant costs cited in \cite{CRS2017} and \cite{melitz_econofact}. Our approach to evaluating this counterfactual is based on a simple idea: if, in the absence of the Jones Act, USGC exporters could have received a higher price, net of transport costs, by shipping to the USEC rather than abroad, they would have done so. Such spatial arbitrage would take advantage of the fact that the distance from the USGC to the USEC is considerably shorter than the lengthy voyages traveled by exports out of the USGC and imports into the USEC, which in the Jones Act status quo depress prices in the USGC and elevate prices in the USEC. Our counterfactual simulation solves for new oil and refined product flows that exhaust all arbitrage opportunities that would have existed absent the Jones Act, and solves for new competitive equilibrium prices in the USGC and USEC. 
+
+
+
+% MAP SHOWING AVERAGE ANNUAL FLOWS
+\begin{figure}[!t]
+\begin{center}
+\captionsetup{width=1.0\textwidth}
+\caption{Average crude oil and petroleum product movements during 2018--2019, in millions of barrels per year, for the US Gulf Coast (USGC) and US East Coast (USEC)}
+\figinpt{width=0.9\textwidth,clip}{MapFlowsFigure.pdf}
+\label{fig:mapflows}
+\fignote[0.93\textwidth]{Notes: ``Conv. gasoline'' is conventional gasoline, and ``ULS diesel'' is ultra low sulfur diesel. USGC export volumes do not include shipments to Central American or Caribbean destinations. USEC import volumes do not include imports from Canada or imports of heavy crude oil. The map ignores some very small movement categories. See section \ref{sec:flowdata} for details on the fuel movement data used to create this figure.}
+\end{center}
+\end{figure}
+
+Evaluating our counterfactual requires three main pieces of information: (1) the quantities exported and the prices received by suppliers on the USGC; (2) the quantities imported and prices paid by buyers on the USEC; and (3) the non-Jones transportation costs from the USGC to the USEC. We obtain the first two of these components from data on oil and refined product prices and volumes from \cite{Bloomberg2023} and \cite{EIApetroleum}. We focus on the years 2018 and 2019, before the Covid-19 pandemic caused large reductions in U.S. petroleum production and consumption that lasted throughout 2020 and 2021, and before Russia's 2022 invasion of Ukraine that delivered an unprecedented shock to global hydrocarbon markets and the international tanker fleet. Among refined products we study the three that have the largest volumes of both USGC exports and USEC consumption: conventional gasoline, jet fuel, and ultra-low sulfur diesel. On average during 2018--2019, the differences between USEC and USGC prices for these fuels were \input{tex_numbers/pricediff_conv.tex}\unskip, \input{tex_numbers/pricediff_jet.tex}\unskip, and \input{tex_numbers/pricediff_ULSD.tex}dollars per barrel (\$/bbl), respectively, though there is considerable variation over time. For crude oil, we restrict attention to light, sweet crude oil, since this is the grade of crude that constitutes the vast majority of USGC oil exports. The average price differential for light, sweet crude between the USEC and USGC during 2018--2019 was \$\input{tex_numbers/pricediff_crude.tex}\unskip/bbl.
+
+Transport from the USGC to USEC that is not Jones-compliant is currently prohibited, so we must estimate the cost of ``non-Jones'' shipments as a counterfactual. We do so by collecting data from Argus Media, an industry intelligence service, on transportation costs from the USGC to Canada, Latin America, and Rotterdam. These destinations are all international and are therefore served by vessels that are not Jones-compliant. We then estimate a model of how shipping costs are affected by distance traveled to infer time series of counterfactual transport costs from the USGC to destinations along the USEC. For example, we estimate that the average non-Jones costs to move refined products from Houston to Port Canaveral, FL and to New York, NY during 2018--2019 were \$\input{tex_numbers/argus_avg_CNV.tex}\unskip/bbl and \$\input{tex_numbers/argus_avg_NYC.tex}\unskip/bbl, respectively. These costs are less than the average price differential between the USEC and USGC, implying that there were potential gains from domestic trade that were foreclosed by the Jones Act's restrictions.
+
+Our counterfactuals then, for each product and month of 2018--2019, evaluate whether USGC exports would have instead moved to the USEC had the Jones Act been abolished. We separately model movements to the Lower Atlantic, Central Atlantic, and New England to account for the fact that shipping costs increase with distance from the USGC. We first replace Lower Atlantic imports with movements from the USGC, and we then continue to re-direct USGC exports up the USEC until either the shipping cost exceeds the observed price differential or available USGC exports are exhausted.
+
+Once we quantify counterfactual oil and refined product movements in the absence of the Jones Act, we compute counterfactual prices in the USGC and in each USEC destination. Counterfactual USGC prices are higher than actual prices during 2018--2019 only if international exports fall to zero. In this case, movements to domestic locations become ``on the margin'', and the USGC price rises to equal the USEC price at the farthest destination reached by USGC movements, minus the non-Jones transport cost to that destination. Likewise, USEC prices fall only if imports are completely displaced, in which case the counterfactual price equals the USGC price plus the non-Jones transport cost to the destination.
+
+We find that for jet fuel and ultra-low sulfur diesel, abolishing the Jones Act would have allowed movements from the USGC to nearly completely replace USEC imports during 2018--2019. For conventional gasoline, current USGC exports are large enough to fully displace imports into the Lower Atlantic, but typically not to the Central Atlantic and New England states. And for light crude oil, we find that movements from the USGC would not have out-competed foreign imports into the USEC for many months during 2018--2019, even absent the Jones Act, but in months when movements occur they are large enough to completely eliminate USEC light crude imports. Total USGC to USEC movements, across all fuels and destinations, increase from \input{tex_numbers/cf/existmoves_all_all.tex}million barrels per year to \input{tex_numbers/cf/cfmoves_all_all.tex}million barrels per year. The consequent improvement in economic efficiency is  \$\input{tex_numbers/cf/eff_all_all.tex}million per year.
+
+Following these changes in oil and product movements, we find that, on average over 2018--2019 and across USEC sub-regions, removing the Jones Act's restrictions would have decreased USEC prices for gasoline, jet fuel, ultra-low sulfur diesel, and light crude oil by \$\input{tex_numbers/cf/tex_wdeltap_gas.tex}\unskip, \$\input{tex_numbers/cf/tex_wdeltap_jet.tex}\unskip, \$\input{tex_numbers/cf/tex_wdeltap_ulsd.tex}\unskip, and \$\input{tex_numbers/cf/tex_deltap_crude_1b.tex}per barrel, respectively. Price decreases are largest in the Southeast and smallest in New England. These changes increase USEC consumers' surplus by \$\input{tex_numbers/cf/cs_all_1.tex}million per year (including \$\input{tex_numbers/cf/cs_crude_1b.tex}million per year of surplus gained by USEC refineries in their role as consumers of crude oil), with the largest gains accruing to Southeast consumers. USEC producers' surplus decreases by \$\input{tex_numbers/cf/ps_all_1.tex}million per year. In the USGC, gasoline prices increase on average by \$\input{tex_numbers/cf/tex_deltap_gas_3.tex}per barrel. USGC consumers' surplus then decreases by \$\input{tex_numbers/cf/cs_prod_3.tex}million per year, and USGC producers' surplus increases by \$\input{tex_numbers/cf/ps_all_3.tex}million per year.
+
+Prior quantitative research on the Jones Act is limited. One set of papers endeavors to evaluate the overall impact of the Jones Act across essentially the full set of tradeable goods. \cite{olney2020} studies the decline in the number of Jones-compliant vessels since 1920 and concludes that the Jones Act has substantially reduced U.S. domestic waterborne trade. \cite{USITC2002} uses a multi-sector computable general equilibrium model to find that the Jones Act imposes an economic cost of \$656 million annually. \cite{OECD2019} estimates that the economy-wide impact of abolishing the Jones Act would be an increase in value-added of \$19 billion annually, assuming an elastic demand for domestic freight movements. \cite{hillberryjimenez2022} focuses on Puerto Rico and applies a gravity model to find that the Jones Act burdens private consumption there by \$691 million annually across all goods. 
+
+A challenge faced by this literature in quantifying the overall economic costs of the Jones Act is estimating the substitution between domestic and foreign freight for many economic sectors. In particular, changes in trade flows will depend substantially on consumers' willingness to substitute domestically-produced varieties for foreign ones, so quantifying a non-Jones counterfactual for the entire economy requires good estimates of substitution elasticities. Our paper avoids this challenge by focusing on well-defined, homogeneous petroleum commodities, for which domestic and foreign supply are perfect substitutes in consumption and high-quality data are available. A drawback of our approach is of course that we are considering only a single sector. However, the petroleum industry looms large in economic and political importance, and debates about repealing the Jones Act have often focused on its impacts on trade in oil and petroleum products \citep{coleman2017,Cato2018,AEI2020,CatoJPMorgan2022,BbgJPMorgan2022}.
+
+We are aware of two previous papers that study the impacts of the Jones Act on U.S. petroleum markets: \cite{gius2013} and \cite{hernandezetal_2019}. The former examines USEC gasoline prices during brief Jones Act waiver periods following hurricanes Katrina and Sandy and finds no clear evidence that waivers decreased prices.\footnote{Presidential administrations have historically issued limited, short-term Jones Act waivers in response to acute emergencies such as hurricanes \citep{bloomberg2017,politico2022}.} As the paper states, however, a clean comparison is difficult because the waiver periods were extraordinary times. \cite{hernandezetal_2019} estimates that removing the Jones Act would have increased total surplus in U.S. petroleum product markets by \$759 million annually, using data from 2001--2017. Our study differs from \cite{hernandezetal_2019} in several ways. First, we consider pricing, volume, and cost heterogeneity across multiple destination ports and multiple petroleum products, while \cite{hernandezetal_2019} aggregates products together and models New York as the destination for all movements. Second, we use foreign imports data to evaluate the potential for increases in domestic movements in our non-Jones counterfactual, while \cite{hernandezetal_2019} uses an estimated demand elasticity to model the increase in movements following a reduction in freight costs. Third, we model counterfactual market equilibria in each USEC destination and in the USGC, enabling a full distributional analysis of the policy change.
+
+The remainder of the paper proceeds as follows. We first summarize in section \ref{sec:Model} our approach for modeling counterfactual fuel flows and prices absent the Jones Act. Section \ref{sec:TranspCost} then discusses how we estimate the costs of moving fuel from the USGC to the USEC in our counterfactual. We discuss our oil and refined product price data in section \ref{sec:pricediffs}, and section \ref{sec:flowdata} discusses our data on fuel movements, imports, exports, and consumption. Section \ref{sec:Count} then presents our main results on how oil and refined product flows, prices, and economic surplus would change if the Jones Act had been eliminated over 2018--2019. We discuss some limitations of our analysis---which we believe lead our results to be conservative estimates of the Jones Act's effects on petroleum consumers and producers---in section \ref{sec:Limits}, and we conclude in section \ref{sec:Conclusion} by summarizing our results and their implications for the distributional politics of the Jones Act.
+
+
+\section{Fuel Transport Arbitrage and Modeling of Counterfactual Fuel Movements and Prices \label{sec:Model}}
+
+We begin by discussing how we model 2018--2019 fuel prices and flows in a counterfactual in which the absence of the Jones Act's regulations allows for USGC to USEC transport at low cost. Our approach is underpinned by an assumption that the market is in a competitive equilibrium in each location, for each fuel type, for each month of the sample. Thus, we model flows and prices so that, in the counterfactual, there are no un-realized arbitrage opportunities available to shippers from the USGC to USEC.\footnote{We model tankers as behaving competitively because the global tanker fleet is not concentrated. Per \cite{CRS2024}, the total tanker fleet numbers roughly 7,500 vessels (clean and dirty), with the largest tanker owner (China COSCO Shipping) owning only 3.2\% of the fleet, and the top 15 owners together accounting for less than 28\% of the fleet. Because of the large size of the global fleet, we further assume that eliminating the Jones Act would not appreciably change the cost of moving fuel on a non-Jones-compliant vessel for a given distance (per \cite{CRS2019}, there are 57 U.S. Jones-compliant tankers engaged in coastwise trade, so replacing these tankers with new entrants would increase the non-Jones-compliant fleet by less than 1\%).\label{fn:fleetcomp}} In addition, this competitive equilibrium assumption implies that fuel prices in the USGC are equal to the free-on-board (FOB) price received by exporters (whenever exports are non-zero), and that fuel prices in the USEC equal the landed price paid to receive imports (whenever imports are non-zero). We also assume that for each location-fuel-month, the local quantity demanded in each USEC destination, and the local quantity supplied in the USGC, is constant. That is, we assume that local demand and supply for crude oil and refined products are perfectly inelastic. While this assumption would be strong in some contexts, we believe it is mild in our study given the small magnitudes, in percentage terms, of the price changes that we simulate.
+
+We simulate counterfactual fuel flows to three sub-regions in the USEC: the Lower Atlantic, Central Atlantic, and New England (we define these locations precisely in our discussion of fuel movements data in section \ref{sec:flowdata}). To proceed for a given fuel type and month, we first consider transport from the USGC to the Lower Atlantic, which has the shortest distance to the USGC of the three USEC destinations and therefore the lowest counterfactual transport cost. If the observed price differential between the USEC and USGC exceeds our estimated counterfactual transport cost to the Lower Atlantic, we then re-direct USGC exports to the Lower Atlantic.\footnote{As we discuss in section \ref{sec:pricediffs}, we assume that prices on the USEC, which are set by import costs, are the same at all USEC locations.} The flow volume that is re-directed in our counterfactual equals the lesser of observed imports into the Lower Atlantic or exports from the USGC. That is, re-directed exports from the USGC can either fully replace the Lower Atlantic's import volume, or the re-direction can exhaust the available export supply from the USGC.
+
+If, after this re-allocation to the Lower Atlantic, there remain USGC exports (because the Lower Atlantic's imports were fully replaced), we then consider re-directing these remaining exports further up the coast to the Central Atlantic. As we did with the Lower Atlantic, we re-direct the USGC's remaining exports to the Central Atlantic if the USGC to USEC price differential exceeds the counterfactual shipping cost to the Central Atlantic (which is strictly greater than the cost to the Lower Atlantic), and we set the re-allocated volume to be the lesser of Central Atlantic imports or remaining USGC exports. If USGC exports still remain after this re-allocation, we repeat this procedure one more time with New England.
+
+Following our re-allocation of the USGC's exports, we compute counterfactual equilibrium prices for each location-fuel-month based on the disposition of the marginal barrel. For the USGC, if export volumes are still strictly positive after the re-allocation---either because the price differential to the USEC was smaller than transport costs or because the USGC's exports were larger than the USEC's imports---we leave the USGC price unchanged because exports remain on the margin. Likewise, for each USEC sub-region, if import volumes are still strictly positive after the re-allocation, we leave the price unchanged because imports remain on the margin.
+
+Alternatively, if our counterfactual causes the USGC's exports to fall to zero, then the USGC price will rise because movements to the USEC will now be on the margin. The new USGC price will equal the USEC price minus the counterfactual shipping cost to the farthest USEC sub-region that is reached by the USGC's re-directed exports. And in each USEC sub-region for which imports are fully replaced by movements from the USGC in our counterfactual, the price will decrease to equal the sum of the counterfactual USGC price with the counterfactual shipping cost to the sub-region.
+
+Finally, the last step in our simulation computes the change in the cost of existing, Jones-compliant coastwise movements of refined products from the USGC to the Lower Atlantic.\footnote{As discussed at greater length in section \ref{sec:flowdata}, there are substantial Jones-compliant movements from the USGC to Florida. These movements are consistent with the intuition that cost of Jones-compliant shipping over this short distance is sufficiently low that these movements can compete with foreign imports. Jones-compliant shipments typically do not move up the USEC beyond Florida.} We infer the cost of existing movements based on the equilibrium condition that Lower Atlantic buyers should, at the margin, be indifferent between purchasing products from the USGC versus products from abroad.\footnote{At a finer geographic scale, this indifference condition will hold at the marginal port, not necessarily for the entire Lower Atlantic. Port Canaveral, FL---our choice as the Lower Atlantic's representative port (see section \ref{sec:Count_sim})---is arguably the marginal port because it is the closest location to Houston, TX for which imports of each product are substantial (see appendix table \ref{appx-appx:tab:padd1cports}).} We therefore assume that the cost of Jones-compliant movements from the USGC to the Lower Atlantic for each fuel-month is given by the USGC versus USEC price differential. The reduction in per-bbl coastwise shipping costs each period is then given by the difference between this inferred Jones-compliant cost and the counterfactual shipment cost to the Lower Atlantic, estimated per section \ref{sec:TranspCost}.
+
+To quantify this simulated counterfactual, we need to obtain three pieces of information. First, as we describe in the next section, we must estimate the counterfactual cost of moving fuels from the USGC to the USEC, absent the Jones Act. Second, we need data on fuel prices in the USGC and USEC. And third, we require data on USGC exports, USEC imports, and Jones-compliant movements from the USGC to the USEC. These two sets of data are discussed in sections \ref{sec:pricediffs} and \ref{sec:flowdata}, respectively.
+
+
+
+
+\section{Estimation of Counterfactual Transportation Costs \label{sec:TranspCost}}
+
+Our analysis requires counterfactual freight rates for transportation from the USGC to locations on the USEC absent the restrictions of the Jones Act. These rates cannot be observed directly because such shipments are currently illegal. Instead, we estimate these unobserved costs using observed rates for non-Jones transportation from the USGC to foreign destinations.
+
+We purchased proprietary information on petroleum freight rates from \cites{Argus2021} ``Argus Freight'' reports, covering 2018--2019. These reports provide daily freight rate assessments for moving petroleum between a variety of ports. Argus's assessments are based on surveys of market participants' (including shippers' and carriers') recent transactions. On days and routes where transaction data are insufficient, Argus computes rate assessments based on rates for other shipments and on factors such as estimated shipping times, fuel costs, and port costs.\footnote{Argus provides sample freight reports and a discussion of their methodology at https://www.argusmedia.com/en/crude-oil/argus-freight.}  
+
+
+% PLOT OF NORMALIZED FREIGHT RATE DATA
+\begin{figure}[!t]
+\begin{center}
+\captionsetup{width=0.9\textwidth}
+\caption{Time series of normalized dirty and clean freight rate data}
+\figinpt{width=.85\textwidth,clip}{NormalizedFreightRates.pdf}
+\label{fig:normrates}
+\fignote[0.9\textwidth]{Notes: Freight rates are from \cite{Argus2021} and correspond to transportation from the USGC. Dirty rates average across shipments to Canada's east coast and Rotterdam. Clean rates average across shipments to Canada's east coast; Las Minas, Panama; and Mexico's east coast. These averages are then normalized by dividing by the first observed average clean rate (January 2nd, 2018). The dirty time series starts in March 2018 because data for Rotterdam are not observed earlier. See text for details.}
+\end{center}
+\end{figure}
+
+We use assessments for voyages originating in the USGC. There are two sets of rates: ``dirty'' rates for tankers that move crude oil, and ``clean'' rates for tankers that move refined products. For dirty freight, we use Argus's rate assessments for two routes, assuming tanker deadweight tonnage (i.e., capacities) of 70,000 tonnes (523,000 barrels): USGC to Canada's east coast, and USGC to Rotterdam (rates to Rotterdam are available starting only in March 2018). For clean freight, we use assessments for USGC to Canada's east coast, USGC to Las Minas (Panama), and USGC to Mexico's east coast (all assuming tanker capacities of 38,000 tonnes (284,000 barrels)). We cannot present the raw Argus data because they are proprietary. Instead, figure \ref{fig:normrates} presents, for each of the dirty and clean series, rates that are averaged across destinations and normalized so that the average clean rate at the start of the sample takes a value of one.
+
+Clean rates vary by approximately $\pm 50\%$ over time, with no overall increasing or decreasing trend during 2018--2019. Dirty rates, on the other hand, exhibit a large increase late in 2019. Trade press attributes this increase to sanctions imposed by the United States on tanker-owning subsidiaries of Cosco, a large marine transport company, for transporting Iranian crude \citep{danishreview_2019,SPglobal_2020}. These sanctions removed a large number of vessels from the dirty tanker fleet, leading to the rise in dirty freight rates.
+
+Average differences in rates between destinations reflect differences in distance by sea from the USGC. On average over 2018--2019, the dirty freight rate to Rotterdam was \input{tex_numbers/DiffUKC_Canada.tex}per barrel greater than the rate to Canada's east coast, reflecting the fact that shipping to Rotterdam requires \input{tex_numbers/DistRotterdam.tex}nautical miles of travel from Houston, whereas shipping to Canada's east coast requires only \input{tex_numbers/DistCanada.tex}nautical miles \citep{Searoutes2023}.\footnote{When obtaining shipping distances from \cite{Searoutes2023}, we use Houston, TX as the port of departure for movements from the USGC to all destinations. For Canada's east coast we use the average of the distances to St. John, NB and Come By Chance, NL (refineries at both locations receive crude from the USGC). For Mexico's east coast we use Tampico. One nautical mile is equal to 1.151 standard miles.} The average clean freight rates to Las Minas, Panama and to Canada's east coast during 2018--2019 were \input{tex_numbers/DiffLasMinas_Mexico.tex}and \input{tex_numbers/DiffCanada_Mexico.tex}per barrel greater, respectively, than the average rate to Mexico's east coast. These differences reflect the fact that the distances from the USGC to Mexico, Las Minas, and Canada are  \input{tex_numbers/DistMexico.tex}\unskip, \input{tex_numbers/DistLasMinas.tex}\unskip, and \input{tex_numbers/DistCanada.tex}nautical miles, respectively \citep{Searoutes2023}.
+
+Estimating what freight rates from the USGC to USEC ports would have been in the absence of the Jones Act requires a model of freight rates as a function of distance traveled and the date of travel. We specify this model as equation (\ref{eq:freight}), in which $r_{it}$ denotes the freight rate from the USGC to destination $i$ on date $t$, $\alpha_t$ are date fixed effects, $d_i$ is the distance to $i$, and $\beta_0$ and $\beta_1$ are parameters to be estimated.
+\begin{equation}
+r_{it} = \alpha_t(\beta_0 + \beta_1d_i) \label{eq:freight}
+\end{equation}
+
+We model the destination effects $\beta_0 + \beta_1d_i$ as an affine function of distance $d_i$ because the main determinants of shipping costs while the vessel is underway---such as fuel, labor, and the opportunity cost of capital---should scale linearly with time at sea (as in \cite{brancaccioetal2020}), which in turn should be proportional to distance.\footnote{In an alternative specification, we model destination effects as $\beta_0 + \beta_1\log d_i$. This alternative leads to estimates of counterfactual non-Jones shipping costs that are modestly higher for clean freight and modestly lower for dirty freight. Estimates of price and surplus changes from eliminating the Jones Act under this alternative specification are presented in appendix table \ref{appx-appx:tab:counterfact_logship} and are not substantially different from the main results in table \ref{tab:counterfact}.\label{fn:logs}}
+We model the time effects $\alpha_t$ and destination effects as multiplicative rather than additive to reflect the fact that the data show increasing differences in rates between destinations at times when rates are high. This phenomenon is consistent with the notion that at times when fuel costs or daily time charter rates are high, differences in rates across shipments of different distances will increase.
+
+We estimate equation (\ref{eq:freight}) separately for clean and dirty freight. For each freight type, we first we regress logged rates on time fixed effects and distance fixed effects. The time effects from this regression correspond to $\log\alpha_t$. We then exponentiate the estimated distance fixed effects and regress them on distance to recover $\beta_0$ and $\beta_1$. For clean freight we estimate $\beta_1=$ \input{tex_numbers/BetaDist_clean.tex}\unskip, and for dirty freight we estimate $\beta_1=$ \input{tex_numbers/BetaDist_dirty.tex}(both in units of \$ per barrel per thousand nautical miles).
+
+
+
+% PLOT OF PREDICTED FREIGHT RATES TO NYC AND TAMPA. CLEAN PANEL AND DIRTY PANEL
+\begin{figure}[!t]
+\begin{center}
+\captionsetup{width=0.95\textwidth}
+\caption{Time series of predicted clean and dirty freight rates, absent the Jones Act, for transport from the USGC to Port Canaveral, FL and New York, NY}
+\mbox{\subfloat[Clean freight]{\figinpt{width=.47\textwidth,clip}{PredictedFreightRates_NYCCNV_clean.pdf}}}
+\mbox{\subfloat[Dirty freight]{\figinpt{width=.47\textwidth,clip}{PredictedFreightRates_NYCCNV_dirty.pdf}}}
+\label{fig:predrates}
+\fignote[\textwidth]{Notes: Predicted rates are based on the estimate of equation (\ref{eq:freight}), using Argus rate assessments for petroleum transport from the USGC to international destinations. See text for details.}
+\end{center}
+\end{figure}
+
+
+With our estimates of equation (\ref{eq:freight}), we can then predict time series of freight rates, absent the Jones Act, for fuel movements from the USGC to destinations on the USEC. We use \cite{Searoutes2023} as the source for all port-to-port distances. As examples, figure \ref{fig:predrates} plots time series of predicted clean and dirty rates in \$/bbl from the USGC to Port Canaveral, FL and New York, NY (distances of \input{tex_numbers/DistCNV.tex}and \input{tex_numbers/DistNYC.tex}nautical miles, respectively). We use the predicted dirty freight rates when we model counterfactual transport costs for crude oil, and we use the predicted clean freight rates when we model counterfactual transport costs for petroleum products.
+
+
+
+\section{Price Differentials Between the East and Gulf Coasts} \label{sec:pricediffs}
+
+Our analysis focuses on trade in crude oil and three petroleum products: conventional gasoline, jet fuel, and ultra-low sulfur diesel (ULSD). We focus on these fuels because they constitute the bulk of overall crude oil and petroleum product trade and consumption, and because there exist high-quality data on their prices, imports, exports, and intra-US movements. Although most of the gasoline consumed in New England and the Central Atlantic is reformulated gasoline, we do not study this product because the USGC exports only conventional gasoline.\footnote{Reformulated gasoline (RFG) is a cleaner burning form of gasoline that is required in some jurisdictions under the Clean Air Act Amendments of 1990. This fuel is not exported because no other countries require it. Refineries in the USGC do produce it though.} We ignore other, higher sulfur, forms of distillate fuel because ULSD comprises the overwhelming majority of both trade and consumption. Finally, for crude oil, we focus attention on light (i.e., low density) crudes because the oil exported from the USGC consists entirely of light crudes \citep{SPglobal_exports_2018}. We define light crude as that with an API gravity exceeding that of Brent grade crude oil (37.5).
+
+We obtained data on crude oil and petroleum product prices from \cite{Bloomberg2023}. Bloomberg provides price assessments for conventional gasoline, jet fuel, and ULSD at both the USGC and New York Harbor. We use Bloomberg's ``Light Louisiana Sweet'' (LLS) price as our measure of the USGC oil price. Neither Bloomberg nor the Energy Information Administration (EIA) publishes a New York or Philadelphia crude oil price; we therefore use Bloomberg's ``U.S. Fair Value Brent'' series for the USEC oil price.\footnote{Brent and LLS are comparable grades. Brent is 37.5 degrees API and 0.40\% sulfur, and LLS is 38.4 degrees API and 0.388\% sulfur \citep{SPglobal_2017}.} We average all price data to the monthly level.\footnote{Appendix figure \ref{appx-appx:fig:pricediffs_eia} presents USGC versus New York price differentials, for conventional gasoline and ULSD, computed using data from \citet{EIApetroleum} (hereafter EIA) rather than Bloomberg. The price differentials we compute for conventional gasoline and ULSD during 2018--2019 are similar regardless of which data source we use, with the only noticeable discrepancy being that the EIA reports a lower USGC gasoline price in February 2019. The EIA does not publish a jet fuel price for New York.  For crude oil, the EIA publishes a West Texas Intermediate (WTI) spot price but not a USGC spot price. Because WTI is priced at Cushing, Oklahoma rather than the USGC, the EIA WTI price series is several dollars per barrel less than the Bloomberg LLS price series. Bloomberg and the EIA report similar Brent spot prices.}
+
+
+% PLOT OF PRICE DIFFS AND COUNTERFACTUAL FREIGHT RATES
+\begin{figure}[!t]
+\begin{center}
+\captionsetup{width=0.8\textwidth}
+\caption{Time series of New York vs USGC price differentials and counterfactual shipping costs}
+\mbox{\subfloat[Conventional gasoline]{\figinpt{width=.47\textwidth,clip}{pricespread_argus_conv.png}}}
+\mbox{\subfloat[Jet fuel]{\figinpt{width=.47\textwidth,clip}{pricespread_argus_jet.png}}}
+\vspace{0.1in}
+\mbox{\subfloat[ULSD]{\figinpt{width=.47\textwidth,clip}{pricespread_argus_ULSD.png}}}
+\mbox{\subfloat[Crude oil]{\figinpt{width=.47\textwidth,clip}{pricespread_argus_crude}}}
+\label{fig:pricediffs}
+\fignote[\textwidth]{Notes: Counterfactual shipping costs are for movements from Houston, TX to New York City and are computed as described in section \ref{sec:TranspCost}. ``ULSD'' is ultra low sulfur diesel. All prices and counterfactual shipping costs are averaged to the monthly level. See text for details.}
+\end{center}
+\end{figure}
+
+
+We treat the Bloomberg Gulf Coast prices as prices that USGC exporters receive at Houston, TX. This treatment follows the assumption that the marginal barrel of oil or product on the USGC is exported. Likewise, we assume that the marginal barrel of oil or product on the USEC is imported. Accordingly, we use Bloomberg's New York Harbor products prices and the Brent price as the price that USEC importers pay. We further use these prices as measures of import costs at all USEC locations, not just New York Harbor.\footnote{The New York Harbor prices are likely conservative measures of prices at more southern locations on the USEC because imports from across the Atlantic must travel farther to reach these locations. For instance, the distance from the Suez Canal to New York Harbor is \input{tex_numbers/DistSuezToNYC.tex}nautical miles, and the distance to Port Canaveral, FL is \input{tex_numbers/DistSuezToCNV.tex}nautical miles \citep{Searoutes2023}.}
+
+Figure \ref{fig:pricediffs} plots the price differences between the USGC and USEC for conventional gasoline, jet fuel, ULSD, and crude oil during our 2018--2019 sample. For the three petroleum products, the price differential is typically around \$2/bbl, though in some months the differential exceeds \$4/bbl. The difference between USGC and USEC crude oil price is generally lower---often around \$1/bbl---though also with occasional spikes to \$4/bbl. Appendix figure \ref{appx-appx:fig:pricediffs_longpanel} plots longer time series of these price differentials, covering 2013--2022. This figure shows that the 2018--2019 differentials are typical of this longer period. It also shows that price differentials for all three refined products spiked above \$15/bbl in 2022 (almost reaching \$80/bbl for jet fuel), following Russia's invasion of Ukraine and a substantial increase in clean tanker freight rates \citep{EIAtankers2022}.
+
+Figure \ref{fig:pricediffs} also compares the price differentials to our estimated counterfactual non-Jones freight rates from Houston to NYC. For the three products, these counterfactual freight rates are typically smaller than the price differential. For conventional gasoline, the Houston to New York price difference is, on average, \$\input{tex_numbers/pricediffminusArgus_conv.tex}\unskip/bbl greater than the counterfactual shipping cost over 2018--2019. For jet fuel and ULSD the corresponding differences are \$\input{tex_numbers/pricediffminusArgus_jet.tex}\unskip/bbl and  \$\input{tex_numbers/pricediffminusArgus_ULSD.tex}\unskip/bbl. In contrast, the crude oil price differential is on average less than the counterfactual shipping cost, by \$\input{tex_numbers/pricediffminusArgus_crude.tex}\unskip/bbl.
+
+The fact that the USGC-to-USEC price differentials tend to be larger and more variable than our counterfactual USGC-to-USEC shipping costs can be explained naturally by distance effects and changes in shipping costs over time. The distances over which the USEC imports fuels and the USGC exports fuels (i.e. trans-Atlantic and trans-Pacific shipping) are larger than the USGC-to-USEC distance, which will cause the price differential to exceed the counterfactual USGC-to-USEC shipping cost on average. In addition, variation in shipping day rates over time will affect the USEC’s import costs and the USGC’s export costs more than the USGC-to-USEC shipping costs, leading to greater variation in the price differential time series (with this variation being positively correlated with shipping costs, as shown in figure \ref{fig:pricediffs}).\footnote{The correlation between the time series is not 1.0, since temporal shocks to local and global fuels markets will change the USGC’s and USEC’s marginal trading partners, leading to imperfectly correlated changes in prices at each location.}
+
+
+\section{Data on Crude Oil and Refined Product Movements and Consumption \label{sec:flowdata}}
+
+Our main source for information on movements and consumption of crude oil and refined products is \citet{EIApetroleum} (hereafter ``EIA''). While some of the EIA datasets we use have geographic data at the city level, some data---and ultimately our main analysis---are aggregated at the level of ``Petroleum Administration for Defense Districts'' (PADDs). Each PADD is a collection of states, and they are mapped in figure \ref{fig:paddmap}. We focus on exports from PADD 3 (the USGC) and imports into each of the USEC sub-PADDs: the Lower Atlantic PADD 1c, Central Atlantic PADD 1b, and New England PADD 1a.
+
+We obtain import data from the EIA's ``Company level imports'' dataset, which records imports at the port-product-month level. Crude oil import data also include information on the oil's density (in degrees API) and sulfur content. Because the USGC's crude exports consist entirely of light crudes \citep{SPglobal_exports_2018}, and because our analysis assumes that USEC imports of heavy crudes cannot be displaced by USGC exports, we include only light crudes in our measure of USEC imports. We also exclude imports from Canada when constructing our measure of imports potentially replaceable by shipments from the USGC. Canadian imports primarily go to the Northeast, and Canada is closer to this region than is the USGC. 
+
+For exports, we use the EIA's ``PADD district exports by destination'' data for PADD 3, which provide monthly export volumes at the product by destination country level.\footnote{There are non-zero but negligible export volumes from PADD 1. Our analysis ignores these volumes.} For each product-month, we subtract volumes going to the Carribean and Central America, since these export locations are closer to the USGC than is the USEC, so that exports to them from the USGC will likely be unaffected by a Jones Act repeal.
+
+
+% PADD MAP
+\begin{figure}[!t]
+\captionsetup{width=1.0\textwidth}
+\caption{Map of EIA Petroleum Administration for Defense Districts (PADDs)}
+\figinpt{width=1.0\textwidth,clip}{EIA_PADDmap_notitle.pdf}
+\fignote[0.75\textwidth]{Source: \citet{EIAPADDs}}
+\label{fig:paddmap}
+\end{figure}
+
+
+To measure total current Jones-compliant coastwise movements from the USGC to PADD 1 each month, we use the EIA's data on ``Movements by tanker and barge between PADD districts''. As reported in \cite{EIAFL}, \cite{EIAeastgulfcoasts}, and \cite{EIAFL2023}, most of these movements go to Florida. This outcome is consistent with the fact that Florida is the closest PADD 1 state to PADD 3, such that Jones-compliant movements over this short distance can compete with foreign imports. To gain further insight into these movements, we collect data from \cite{Army2023} on port-level receipts, though information is only available at an annual frequency. These data show that most coastwise trade from PADD 3 goes to either Tampa or Port Everglades (near Miami), with considerably smaller volumes going further on to Port Canaveral, FL, Jacksonville, FL; Savannah, GA; and Charleston, SC. Appendix table \ref{appx-appx:tab:padd1cports} provides the shares of coastwise movements and foreign imports moving into each of these six ports, by product, over 2018--2019.
+
+Finally, we collect data on sub-PADDs' consumption of crude oil and petroleum products using the EIA's ``Refinery utilization and capacity'' and ``Prime supplier sales volumes'' datasets, respectively. The former reports monthly crude oil inputs into refineries, and the latter reports sales of products to local distributors, retailers, or end users. For crude oil, we obtain a measure of light crude consumption for PADD 1 by subtracting heavy crude imports from total consumption.
+
+
+% FLOW SUMMARY TABLE
+\begin{table}[!t]
+\centering
+\captionsetup{width=0.85\textwidth}
+\caption{Summary of petroleum product and crude oil consumption and flows, in millions of barrels per year over 2018--2019}
+\input{tables/flows_summary.tex}
+\fignote[0.85\textwidth]{Notes: ``ULSD'' is ultra low sulfur diesel. PADD 3 export volumes do not include shipments to Central American or Carribean destinations. PADD 1 crude import volumes exclude imports from Canada, and PADD 1 crude oil consumption and import volumes exclude heavy crude. The table ignores very small movements from PADD 3 to PADDs 1a and 1b, and very small movements of crude from PADD 3 to PADD 1c. See text for details.}
+\label{tab:flows}
+\end{table}
+
+
+Table \ref{tab:flows} summarizes crude oil and refined product consumption and trade flows for each sub-PADD during 2018--2019. Among the refined products we study, consumption and trade are largest for conventional gasoline, followed by ULSD and jet fuel. PADD 3 exports of gasoline are smaller than total imports into PADD 1, but for jet fuel and ULSD, exports from PADD 3 exceed total imports into PADD 1. Crude oil exports from PADD 3 substantially exceed imports into PADD 1, all of which go to refineries in PADD 1b. Jones-compliant movements of refined product from PADD 3 to PADD 1c are of a comparable magnitude to PADD 3 refined product exports.
+
+
+
+\section{Counterfactual Analysis: Abolishing the Jones Act \label{sec:Count}}
+
+\subsection{Simulation of New Equilibrium} \label{sec:Count_sim}
+
+Our simulation proceeds via the steps discussed in section \ref{sec:Model}. First, we re-direct exports from the USGC to instead become movements to the USEC whenever doing so is profitable and there exist USGC exports available to be re-routed. Second, we compute new equilibrium crude oil and refined product prices in both the USGC and USEC. Third, we compute the reduction in the cost of observed 2018--2019 Jones-compliant shipments from the USGC to Florida.
+
+To model counterfactual movements at the sub-PADD level, we must assign, for each sub-PADD, a port location at which we will model shipping costs, prices, movements, and imports. Our goal in making each assignment is to reasonably represent the average distance that shipments from PADD 3 would have to travel---and hence the counterfactual freight cost of such shipments---in order to reach the sub-PADD.\footnote{An alternative approach would be to simulate our counterfactual more granularly, at the level of individual ports. A practical obstacle to doing so is that we lack data on domestic movements at the port-by-month level, and we lack data on consumption at the port-level (at any frequency). But even absent this data constraint, we view some degree of spatial aggregation as desirable because many ports are sufficiently close to one another that differences in shipping costs are likely to be immaterial. Our notion of equilibrium implies that at a sufficient distance up the Eastern Seaboard from Houston, ports should fully transition from receiving fuels from PADD 3 to receiving fuels from foreign imports. This notion seems unlikely to hold precisely on a port-by-port basis, but is more reasonable at larger geographic scale.} We use Boston for PADD 1a and New York for PADD 1b, as these locations handle substantial import volumes and are centrally-located within their sub-PADDs. For PADD 1c, we use Port Canaveral, FL, which lies between Jacksonville and Miami on Florida's East Coast. This choice is driven by the fact that the vast majority of PADD 1c's product imports and receipts from PADD 3 flow into four Florida ports: Tampa, Port Everglades (near Miami), Port Canaveral, and Jacksonville (see appendix table \ref{appx-appx:tab:padd1cports} for the share of domestic and foreign movements received by each port). Of these four ports, Tampa and Jacksonville are closest to and farthest from Houston, respectively, so that either Port Everglades or Port Canaveral better represents the average distance that movements from PADD 3 would travel in our counterfactual.\footnote{Tampa is \input{tex_numbers/DistTAM.tex}nautical miles away from Houston, Port Everglades is \input{tex_numbers/DistEV.tex}nautical miles away, Port Canaveral is \input{tex_numbers/DistCNV.tex}nautical miles away, and Jacksonville is \input{tex_numbers/DistJAX.tex}nautical miles away \citep{Searoutes2023}.}  We choose Port Canaveral because its greater distance from Houston implies that our counterfactual savings estimates are conservative. The results from an alternative counterfactual analysis that uses Port Everglades are presented in appendix table \ref{appx-appx:tab:counterfact_port_EV}; these results present a modestly greater efficiency gain from eliminating the Jones Act than what is shown in our main results in table \ref{tab:counterfact} below.
+
+
+
+
+\subsection{Results: Changes in Movements, Imports, and Exports} \label{sec:Count_results_flows}
+
+We summarize counterfactual flows of oil and refined products in table \ref{tab:counterfact_flows}, and we show time series of actual and counterfactual flows in figure \ref{fig:countflows}. Absent the Jones Act's restrictions, we find that movements of refined products from the USGC almost completely displace refined product imports into the Lower Atlantic states (PADD 1c). Counterfactual gasoline imports remain non-zero, albeit small (\input{tex_numbers/cf/imports_1c_gas.tex}million barrels per year (mmbbl/year)), because in a few months during 2018--2019 the price difference between the USEC and USGC for gasoline was below the estimated counterfactual shipping cost.
+
+
+% COUNTERFACTUAL FLOW SUMMARY TABLE
+\begin{table}[!t]
+\centering
+\captionsetup{width=0.9\textwidth}
+\caption{Actual and counterfactual (no Jones Act) crude oil and product flows, in millions of barrels per year (mmbbl/year) over 2018--2019}
+\input{tables/counterfactual_flows_summary.tex}
+\fignote[0.9\textwidth]{Notes: ``ULSD'' is ultra low sulfur diesel. ``New movements'' are the difference between counterfactual and actual coastwise movements. PADD 3 export volumes do not include shipments to Central American or Carribean destinations. PADD 1 import volumes do not include imports from Canada or imports of heavy crude oil. The table ignores very small actual movements from PADD 3 to PADDs 1a and 1b, and very small movements of crude from PADD 3 to PADD 1c. See text for details.}
+\label{tab:counterfact_flows}
+\end{table}
+
+
+% 12 PANEL FIGURE OF COUNTERFACTUAL FLOWS
+\begin{figure}[!t]
+\captionsetup{width=0.95\textwidth}
+\caption{Actual (solid line) and non-Jones counterfactual (dashed line) fuel exports, imports, and movements, 2018--2019, in millions of barrels per month}
+\mbox{\subfloat[Conventional gasoline]{\figinpt{width=1\textwidth,trim={0 0 0 0.5cm},clip}{padd1_counterfactual_gas.png}}}
+\mbox{\subfloat[Jet fuel]{\figinpt{width=1\textwidth,trim={0 0 0 0.5cm},clip}{padd1_counterfactual_jet.png}}}
+\mbox{\subfloat[ULSD]{\figinpt{width=1\textwidth,trim={0 0 0 0.5cm},clip}{padd1_counterfactual_ulsd.png}}}
+\mbox{\subfloat[Crude oil]{\figinpt{width=1\textwidth,trim={0 0 0 0.5cm},clip}{padd1_counterfactual_crude.png}}}
+%\figinpt{width=0.99\textwidth,clip}{padd1_counterfactual_12panel.png}
+\fignote[1\textwidth]{Notes: ``Exports'' show USGC (PADD 3) exports, ``Imports'' show USEC (all of PADD 1) imports, and ``Movements'' show movements from the USGC to PADD 1c. PADD 3 export volumes do not include shipments to Central American or Carribean destinations. PADD 1 import volumes do not include imports from Canada or imports of heavy crude oil. The figure ignores very small movements from PADD 3 to PADDs 1a and 1b, and very small movements of crude from PADD 3 to PADD 1c. ``ULSD'' is ultra low sulfur diesel. The vertical axis scale is different for each product. See text for details.}
+\label{fig:countflows}
+\end{figure}
+
+
+
+
+For jet fuel and ULSD, the USGC to USEC price differential is larger than the counterfactual shipping cost to New England (PADD 1a) in most months of 2018--2019 (\input{tex_numbers/cf/nmonths_posmargin_jet_1a.tex}of 24 months for jet fuel, and \input{tex_numbers/cf/nmonths_posmargin_ULSD_1a.tex}of 24 months for ULSD). Actual USGC exports during 2018--2019 were sufficiently large that the USGC is able to completely replace USEC imports in these months. Overall, we find that eliminating the Jones Act enables the USGC to replace \input{tex_numbers/cf/newmove_1_jet.tex}mmbbl/year of the USEC's jet fuel imports and \input{tex_numbers/cf/newmove_1_ULSD.tex}mmbbl/year of its ULSD imports (accounting for \input{tex_numbers/cf/pctreplaced_1_jet.tex}\unskip\% and \input{tex_numbers/cf/pctreplaced_1_ULSD.tex}\unskip\% of actual jet fuel and ULSD imports, respectively).
+
+For conventional gasoline, the replacement of USEC imports in the non-Jones counterfactual is more limited than for jet fuel and ULSD. The USGC to USEC gasoline price differential exceeds the counterfactual shipping cost to the Central Atlantic (PADD 1b)---by far the largest receiver of conventional gasoline imports on the USEC---in \input{tex_numbers/cf/nmonths_posmargin_gas_1b.tex}of 24 months during 2018--2019. And in most months, USGC exports exceed imports into PADD 1c but not imports into PADDs 1b and 1c combined, so that elimination of the Jones Act causes USGC exports to be exhausted before USEC imports are fully replaced. Overall then, movements from the USGC replace \input{tex_numbers/cf/pctreplaced_1_gas.tex}\unskip\% (\input{tex_numbers/cf/newmove_1_gas.tex}mmbbl/year) of the USEC's imports of conventional gasoline during 2018--2019. These new movements account for \input{tex_numbers/cf/pctdiverted_3_gas.tex}\unskip\% of the USGC's actual gasoline exports during 2018--2019.
+
+As shown in figure \ref{fig:pricediffs}, the USGC to USEC price differentials for light crude oil are frequently not large enough to justify coastwise movements from Houston to PADD 1b. Thus, even though the USGC exports considerably more oil than the USGC imports, we find that eliminating the Jones Act causes only \input{tex_numbers/cf/pctreplaced_1_crude.tex}\unskip\% (\input{tex_numbers/cf/newmove_1_crude.tex}mmbbl/year) of the USEC's light crude oil imports to be displaced.
+
+
+
+\subsection{Results: Changes in Prices, Efficiency, and Surplus} \label{sec:Count_results_surplus}
+
+The top panel of table \ref{tab:counterfact} presents the changes in prices associated with eliminating the Jones Act, averaged over 2018--2019. The largest petroleum product price decreases are in the Lower Atlantic (PADD 1c), since: (1) existing USGC exports are sufficiently large to completely displace the region's imports, so that movements from the USGC become ``on the margin''; and (2) the cost of these movements is relatively small, owing to the short distance from the USGC. On average, the Lower Atlantic prices of conventional gasoline, jet fuel, and ULSD decrease by \$\input{tex_numbers/cf/tex_deltap_gas_1c.tex}\unskip, \$\input{tex_numbers/cf/tex_deltap_jet_1c.tex}\unskip, and \$\input{tex_numbers/cf/tex_deltap_ulsd_1c.tex}\unskip/bbl, respectively.
+
+The price decreases in PADDs 1a and 1b for jet fuel and ULSD are smaller than in PADD 1c, reflecting the increased distance required to reach these locations from the USGC. Prices for conventional gasoline in PADDs 1a and 1b fall by very little---\$\input{tex_numbers/cf/tex_deltap_gas_1a.tex}and \$\input{tex_numbers/cf/tex_deltap_gas_1b.tex}\unskip/bbl, respectively---reflecting the fact that movements from the USGC do not fully displace these areas' gasoline imports in most months. The average product price decreases in the USEC, weighted by sub-PADD consumption, are \$\input{tex_numbers/cf/tex_wdeltap_gas.tex}\unskip, \$\input{tex_numbers/cf/tex_wdeltap_jet.tex}\unskip, and \$\input{tex_numbers/cf/tex_wdeltap_ulsd.tex}per barrel, respectively, for conventional gasoline, jet fuel, and ULSD. 
+
+The price of gasoline on the USGC rises by \$\input{tex_numbers/cf/tex_deltap_gas_3.tex}\unskip/bbl on average, since in some months all of the USGC's gasoline exports are re-reouted to the USEC, so that the USGC price increases to meet the USEC price less the cost of these movements. Finally, we find that the PADD 1b price for light crude oil decreases by \$\input{tex_numbers/cf/tex_deltap_crude_1b.tex}\unskip/bbl, reflecting the complete displacement of USEC light crude imports in months in which the price differential is wide enough to justify movements from the USGC.
+
+
+
+% COUNTERFACTUAL SUMMARY TABLE
+\begin{table}[!t]
+\centering
+\captionsetup{width=0.95\textwidth}
+\caption{Price changes and distributional impacts from eliminating the Jones Act during 2018--2019}
+\input{tables/counterfactual_summary.tex}
+\fignote[0.9\textwidth]{Notes: ``ULSD'' is ultra low sulfur diesel. Reported price changes are averages over 2018--2019. The price, efficiency, and consumer surplus changes for crude oil in PADDs 1a and 1c are set to zero because these regions import essentially zero crude oil. See text for details.}
+\label{tab:counterfact}
+\end{table}
+
+
+ 
+We then compute the efficiency gains from eliminating the Jones Act, for each destination-fuel-month, as the product of counterfactual USGC to USEC movements with the decrease in the USGC to USEC price differential. This calculation treats the cost of actual product shipments (both Jones-compliant movements and foreign imports) as true economic costs. In practice such shipments may be associated with factor rents, which would be reduced in our non-Jones counterfactual. 
+
+The second panel of table \ref{tab:counterfact} shows the efficiency gains that we calculate. The total gain, across all sub-PADDs and products, is \$\input{tex_numbers/cf/eff_all_all.tex}million per year. Most of this gain is associated with movements to the Lower Atlantic, since this region experiences the largest coastwise movement volumes and the largest decreases in its price differentials relative to the USGC. Among products, the largest gains are associated with conventional gasoline, since its counterfactual coastwise movements are larger than those of the other fuels.
+
+We present the consumer surplus impacts of eliminating the Jones Act in the third panel of table \ref{tab:counterfact}. We compute the change in consumer surplus for each region and fuel as the product of consumption with the change in price. We find that USEC petroleum product consumers would experience an increase in consumer surplus of \$\input{tex_numbers/cf/cs_prod_1.tex}million per year. Most of these gains accrue to consumers in the Lower Atlantic, whose consumer surplus increases by \$\input{tex_numbers/cf/cs_prod_1c.tex}million per year, because this region experiences the largest product price decreases. USGC consumers experience a decrease in consumer surplus of \$\input{tex_numbers/cf/cs_prod_3.tex}million per year, primarily reflecting an increase in USGC gasoline prices. For crude oil, reductions in price in the Central Atlantic (PADD 1b) imply that consumer surplus increases by \$\input{tex_numbers/cf/cs_crude_1b.tex}million per year there. These gains should be understood as accruing to Central Atlantic refiners in their role as crude oil consumers. Summing these consumer surplus changes across all products (including crude oil) and all PADDs (including PADD 3), the total change in consumer surplus from eliminating the Jones Act is \$\input{tex_numbers/cf/cs_all_all.tex}million per year.
+
+Because the overall increase in consumer surplus (\$\input{tex_numbers/cf/cs_all_all.tex}million per year) exceeds the efficiency gain from eliminating the Jones Act (\$\input{tex_numbers/cf/eff_all_all.tex}million per year), it must be the case that total producer surplus decreases. The producer surplus changes by sub-PADD and fuel are shown in the bottom panel of table \ref{tab:counterfact}; the total loss of producer surplus is \$\input{tex_numbers/cf/ps_all_all.tex}million per year.\footnote{The producer surplus change for each region and fuel is the change in local price times the change in local quantity supplied. Quantity supplied for USEC locations equals consumption minus port receipts (domestic or foreign), and quantity supplied for USGC locations equals consumption plus port shipments out (domestic or foreign). The total efficiency gain equals the sum of the total consumer surplus change with the total producer surplus change.} These losses accrue primarily to inframarginal suppliers of oil and refined products to the USEC (and especially to the Lower Atlantic), as a consequence of the USEC's reduced product prices. For USEC refiners, these losses are offset by our finding that USEC crude oil prices decrease. USGC product suppliers, on the other hand, experience a surplus gain of \$\input{tex_numbers/cf/ps_all_3.tex}million per year due primarily to the increase in USGC gasoline prices.
+
+
+\subsection{Limitations} \label{sec:Limits}
+
+Our analysis has several limitations, each of which suggests that our results are under-estimates of the long-run effects of abolishing the Jones Act for U.S. crude oil and petroleum product consumers and producers. First, our analysis assumes that local supply and demand for products are perfectly inelastic. Allowing for some price-responsiveness would lead to further surplus gains due to increases in quantities consumed and produced. Such gains would almost surely be modest in the short-run but could plausibly be substantial in the long-run to the extent that the Jones Act played a role in USEC refinery disinvestment over the last decade. Second, our use of New York Harbor prices as measures of the prices of imported crude in the Southeast potentially under-estimates actual prices paid, since transit distances for imports from Europe and the Middle East to Southeast locations are longer than the distance to New York. 
+
+Third, there may be potential for crude oil movements from the USGC to the USEC to displace USEC receipts of crude-by-rail from the Bakken Shale of North Dakota.\footnote{We do not see potential for changes in pipeline transportation of crude oil nor for overland transport of petroleum products. There are no crude oil pipelines from the USGC or the Midwest to the USEC. For products, the main overland supply for the USEC is the Colonial Pipeline from the USGC, which typically operates at full capacity \citep{EIAcolonialflow}. We assume it would continue to do so were the Jones Act abolished due to the low costs of pipeline operation once the initial capital investment is sunk \citep{covertkellogg2023}. And the U.S. does not currently move material volumes of gasoline, ULSD, or jet fuel over long distances by rail (the EIA does not even list these products as options on its data page for rail transport of crude oil and petroleum products \citep{EIACBR}).} During 2018--2019, these movements averaged 35 mmbbl/year, about one-third of waterborne USEC crude oil imports \citep{EIACBR}.\footnote{Crude-by-rail movements to the USEC were considerably larger before 2017, but the construction of the Dakota Access Pipeline from the Bakken to the USGC and increased rail capacity from the Bakken to the West Coast (which is closer to the Bakken than the USEC) have eroded Bakken-to-USEC rail movements, which can cost around \$10/bbl. See \cite{covertkellogg2023} for additional discussion. In 2023, USEC crude-by-rail receipts were just 7 mmbbl \citep{EIACBR}.} Reducing these movements would lead to additional cost efficiencies and also abate local air pollution from locomotives \citep{clay2019,covertkellogg2023}. Any such gains are likely to be modest though, since USGC to USEC crude oil price differentials are often not large enough to justify coastwise movements even absent the Jones Act, as discussed in section \ref{sec:Count_results_flows}.
+
+Fourth, we do not consider the potential for shipments to the U.S. West Coast (USWC) via the Panama Canal. For conventional gasoline, ULSD, and light crude oil, the potential gains from trade are small, at least in the short-run, owing to California's fuel content regulations for gasoline and ULSD, and to the fact that most of the USWC's crude imports are relatively heavy.\footnote{Bloomberg does not report a light crude price for the USGC, instead reporting prices for the heavier ``Alaska North Slope'' crude.} For jet fuel, potential gains from trade arise from the facts that the USWC imports more jet fuel than the USEC and that Bloomberg reports relatively high jet fuel prices for Los Angeles. However, our Argus shipping data do not permit us to estimate shipping costs via the Panama Canal, and applying our distance-based cost projections to USGC-to-USWC movements would likely underestimate counterfactual shipping costs.\footnote{The average jet fuel price differential from Houston to Los Angeles is \$\input{tex_numbers/pricediff_jet_la.tex}\unskip/bbl, and projecting equation (\ref{eq:freight}) yields an estimate of average Houston-to-LA shipping costs of \$\input{tex_numbers/shipcost_la.tex}\unskip/bbl during 2018--2019 (based on a travel distance of \input{tex_numbers/DistLA.tex}nautical miles via the Panama Canal \citep{Searoutes2023}). The USWC imported \input{tex_numbers/padd5_imp_jet.tex}million bbl per year of jet fuel during 2018--2019 (excluding Canadian imports).}
+
+Fifth, our analysis does not include Puerto Rico and the U.S. Virgin Islands, which would also potentially benefit from abolishing the Jones Act.\footnote{The barrier to including Puerto Rico and the U.S. Virgin Islands in our analysis is the lack of monthly data on their fuel consumption and imports. Annual consumption data are available at \cite{EIAintl}. Puerto Rico and the U.S. Virgin Islands together consumed an average of \input{tex_numbers/PRVI_gas.tex}\unskip, \input{tex_numbers/PRVI_jet.tex}\unskip, and \input{tex_numbers/PRVI_ulsd.tex}million barrels per year of conventional gasoline, jet fuel, and ULSD, respectively, during 2018--2019.} Sixth our analysis could be extended to incorporate additional products. We have entirely ignored reformulated gasoline (RFG), which comprises one-third of all PADD 1 consumption, because the USGC does not export RFG. However, refineries in the USGC do in fact produce RFG, and it is easy to imagine them producing more of it to ship to the USEC if the Jones Act were removed. We have also ignored liquefied natural gas, which the USGC exports in large volumes and is occasionally imported into New England.
+
+Finally, our welfare analysis does not incorporate changes to rents earned by the Jones Act fleet or ship-builders, since we do not have the means to separate out how much of Jones-compliant shipping costs (from the perspective of shippers) consist of true economic costs versus profits or factor rents. As discussed in \cite{melitz_econofact}, arguments in favor of the Jones Act typically center on the desire to support the domestic U.S. merchant fleet. Our paper can be read as an assessment of how attempting to achieve that policy goal via the Jones Act affects product flows, prices, and welfare in petroleum markets, without quantifying the policy's welfare effects on the U.S. shipping industry itself.
+
+
+\section{Conclusion \label{sec:Conclusion}}
+
+This paper quantifies how abolishing the Jones Act would have impacted U.S. markets for crude oil and refined products during 2018--2019. We estimate counterfactual U.S. Gulf Coast to East Coast shipping costs associated with the ability to use foreign-flagged vessels and then find that if shippers were legally able to move fuels at these costs: (1) existing movements from the Gulf Coast to Florida would experience cost reductions; (2) movements from the Gulf Coast up the Eastern Seaboard would increase, entirely displacing East Coast foreign imports for some products and months; and (3) East Coast oil and refined product prices would decrease, while Gulf Coast conventional gasoline prices would increase (though with a magnitude less than the decrease in East Coast prices). The largest refined product price decreases occur in the Southeast due to its proximity to the Gulf Coast. We estimate that absent the Jones Act, the prices of gasoline, jet fuel, and ultra-low sulfur diesel in the Southeast would have been \$\input{tex_numbers/cf/tex_deltap_gas_1c.tex}\unskip, \$\input{tex_numbers/cf/tex_deltap_jet_1c.tex}\unskip, and \$\input{tex_numbers/cf/tex_deltap_ulsd_1c.tex}\unskip/bbl lower, respectively, during 2018--2019.
+
+We therefore conclude that the primary beneficiaries of repealing the Jones Act for coastwise trade in oil and petroleum products would be East Coast, and especially Southeast, consumers. Existing suppliers of oil and refined products to the East Coast would be harmed, though their losses would be smaller than East Coast consumers' gains, reflecting the cost efficiencies that would be realized from a Jones Act repeal. Gulf Coast producers would benefit, though their gains would be limited because for most products and months, foreign exports would remain on the margin, leaving Gulf Coast prices unchanged. Moreover, some Gulf Coast producers are also suppliers to the East Coast, so that their overall economic surplus might be diminished as a consequence of a Jones Act repeal.\footnote{For instance, Chevron and Valero own Gulf Coast refineries and are also shippers on the Colonial Pipeline to the East Coast \citep{Reuters_Colonial}.}
+
+These distributional impacts potentially speak to the politics around the Jones Act. The overall reduction in oil and refined product suppliers' profits that we find would follow from eliminating the Jones Act suggests that industry participants have limited incentives to advocate for a repeal. Thus, our results may explain why, for example, both of Louisiana's senators have opposed repealing the Jones Act despite the state's prominence in oil production and refining \citep{seafarers2020}. In contrast, the primary beneficiaries from repeal are East Coast refined product consumers, who would benefit in aggregate by \$\input{tex_numbers/cf/cs_prod_1.tex}million annually. This sum, however, amounts to only a few dollars per year per person. The beneficiaries of a Jones Act repeal can therefore be characterized as an instance of a diffuse interest, in the spirit of \cite{Olson}, that is likely difficult to mobilize for policy change.
+
+
+
+\bibliographystyle{aer}
+\bibliography{KS_JonesAct_refs}
+
+
+
+\end{document}

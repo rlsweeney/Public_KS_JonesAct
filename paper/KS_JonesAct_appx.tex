@@ -1,0 +1,188 @@
+
+\documentclass[12pt]{article}
+\usepackage{amsmath, graphicx, url, afterpage, setspace, amsthm, amssymb}
+
+% LOAD ENDFLOAT PACKAGE
+%\usepackage[nolists,tablesfirst]{endfloat}
+
+% LOAD CAPTION PACKAGE
+\usepackage[centerlast,bf]{caption}
+
+% LOAD SUBFIGURE PACKAGE
+\usepackage[position=above]{subfig}
+
+% LOAD ACCENTS PACKAGE
+%\usepackage{accents}
+
+% TABLE MULTI ROW PACKAGE
+\usepackage{multirow}
+
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{threeparttable}
+
+
+% TO REFERENCE ITEMS IN THE PAPER
+\usepackage{zref-xr}
+\zxrsetup{toltxlabel}
+\zexternaldocument*[paper-]{KS_JonesAct}
+
+% MAIN BIBLIOGRAPHY
+\usepackage[longnamesfirst]{natbib}
+%\usepackage{natbib}
+\bibliographystyle{aer}
+%\bibpunct{(}{)}{;}{a}{}{,}
+%\bibliographystyle{chicago}
+\newcommand\cites[1]{\citeauthor{#1}'s\ (\citeyear{#1})}
+
+%%%%% Directory path for input files (tables and single num tex files)
+\makeatletter
+\def\input@path{{../output/}}
+\makeatother
+%%%%% Directory path of image files
+\graphicspath{{../output/figures/}}
+
+% DEFINE FIGURE INSERT, CAPTION, AND NOTE COMMANDS
+\newlength{\figwidth}
+\newcommand{\figinpt}[2]{
+    \settowidth{\figwidth}{\includegraphics[#1]{#2}}
+    \centering
+    \includegraphics[#1]{#2}}
+
+\DeclareTextFontCommand{\fignotefont}{\normalfont\footnotesize}
+\newcommand{\fignote}[2][\linewidth]{
+    \begin{minipage}[]{#1}
+        \vspace{12pt}
+        \fignotefont{#2}
+    \end{minipage}}
+
+\DeclareTextFontCommand{\tabnotefont}{\normalfont\footnotesize}
+\newcommand{\tabnote}[2][\linewidth]{
+    \begin{minipage}[]{#1}
+        \vspace{12pt}
+        \tabnotefont{#2}
+    \end{minipage}}
+
+% ADJUST PAGE MARGINS
+\oddsidemargin 0in
+\evensidemargin 0in
+\textwidth 6.5in
+\textheight 9in
+\topmargin -.325in
+
+% DEFINE NEW THEOREM-LIKE ENVIRONMENTS
+\newtheorem*{ntheorem}{Theorem}
+\newtheorem{theorem}{Theorem}
+\newtheorem{exercise}{Exercise}
+\newtheorem{definition}{Definition}
+\newtheorem{result}{Result}
+\newtheorem*{nassumption}{Assumption}
+\newtheorem{assumption}{Assumption}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{nlemma}{Lemma}
+
+
+\begin{document}
+
+\pagenumbering{roman}
+
+\pagenumbering{arabic}
+
+%\singlespace
+\onehalfspacing
+
+\appendix
+\setcounter{page}{1}
+\renewcommand{\thepage}{A-\arabic{page}}
+\renewcommand{\theequation}{A.\arabic{equation}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\renewcommand{\thetable}{A.\arabic{table}}
+
+
+
+\section*{Online appendix for ``Impacts of the Jones Act on U.S. Petroleum Markets''}
+
+
+% LONG TIME SERIES OF PRICE DIFFS
+\begin{figure}[!h]
+\begin{center}
+\captionsetup{width=1\textwidth}
+\caption{Time series of New York City vs USGC price differentials}
+\mbox{\subfloat[Conventional gasoline]{\figinpt{width=.47\textwidth,clip}{pricespread_long_conv.png}}}
+\mbox{\subfloat[Jet fuel]{\figinpt{width=.47\textwidth,clip}{pricespread_long_jet.png}}}
+\mbox{\subfloat[ULSD]{\figinpt{width=.47\textwidth,clip}{pricespread_long_ULSD.png}}}
+\mbox{\subfloat[Crude oil]{\figinpt{width=.47\textwidth,clip}{pricespread_long_crude}}}
+\label{appx:fig:pricediffs_longpanel}
+\fignote[\textwidth]{Note that the vertical axis scale is different in each panel of this figure. All prices are averaged to the monthly level. See section \ref{paper-sec:pricediffs} of the main text for details.}
+\end{center}
+\end{figure}
+
+
+\clearpage
+
+
+% BBG VS EIA DIFFS
+\begin{figure}[!t]
+\begin{center}
+\captionsetup{width=0.95\textwidth}
+\caption{Comparison of price differentials using Bloomberg vs EIA price data}
+\figinpt{width=1\textwidth,clip}{pricediffs_spread_eia.png}
+\label{appx:fig:pricediffs_eia}
+\fignote[\textwidth]{Each panel presents the difference between the New York versus USGC price differential as calculated using EIA price data versus Bloomberg price data. See section \ref{paper-sec:pricediffs} of the main text for details.}
+\end{center}
+\end{figure}
+
+\clearpage
+
+
+% FLORIDA PORT SHARES TABLE
+\begin{table}[!t]
+\centering
+\captionsetup{width=0.85\textwidth}
+\caption{Shares of domestic movements and imports received by each of six ports in PADD 1c during 2018--2019, for each petroleum product}
+\input{tables/Padd1cportshares.tex}
+\fignote[0.85\textwidth]{Notes: ``ULSD'' is ultra low sulfur diesel. Domestic port shares are derived from \citet{Army2023}, and import shares are from \citet{EIApetroleum}. See section \ref{paper-sec:flowdata} of the main text for details.}
+\label{appx:tab:padd1cports}
+\end{table}
+
+\clearpage
+
+
+% COUNTERFACTUAL SUMMARY TABLE, ASSUMING 1C PORT IS PORT EVERGLADES
+\begin{table}[!t]
+\centering
+\captionsetup{width=0.95\textwidth}
+\caption{Price changes and distributional impacts from eliminating the Jones Act during 2018--2019, using Port Everglades as the PADD 1c port}
+\input{tables/counterfactual_summary_port_EV.tex}
+\fignote[0.9\textwidth]{Notes: This table is the analog to table \ref{paper-tab:counterfact} in the main text, but uses Port Everglades as the PADD 1c port rather than Port Canaveral.``ULSD'' is ultra low sulfur diesel. Reported price changes are averages over 2018--2019. The price, efficiency, and consumer surplus changes for crude oil in PADDs 1a and 1c are set to zero because these regions import essentially zero crude oil. See text for details.}
+\label{appx:tab:counterfact_port_EV}
+\end{table}
+
+
+
+
+% COUNTERFACTUAL SUMMARY TABLE, USING LOG SPEC TO ESTIMATE COUNTERFACTUAL SHIPPING COSTS
+\begin{table}[!t]
+\centering
+\captionsetup{width=0.95\textwidth}
+\caption{Price changes and distributional impacts from eliminating the Jones Act during 2018--2019, using an alternative specification for estimating shipping costs}
+\input{tables/counterfactual_summary_logship.tex}
+\fignote[0.9\textwidth]{Notes: This table is the analog to table \ref{paper-tab:counterfact} in the main text, but estimates shipping costs using the equation $r_{it} = \alpha_t(\beta_0 + \beta_1\log d_i)$ rather than the non-logged specification given in equation (\ref{paper-eq:freight}) in the main text.``ULSD'' is ultra low sulfur diesel. Reported price changes are averages over 2018--2019. The price, efficiency, and consumer surplus changes for crude oil in PADDs 1a and 1c are set to zero because these regions import essentially zero crude oil. See text for details.}
+\label{appx:tab:counterfact_logship}
+\end{table}
+
+
+
+\clearpage
+
+
+\bibliography{KS_JonesAct_refs}
+
+
+
+\end{document}
+
+
+
+
+
